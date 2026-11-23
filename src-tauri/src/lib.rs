@@ -17,6 +17,7 @@ pub fn run() {
             .inner_size(1280.0, 840.0)
             .min_inner_size(900.0, 600.0)
             .center()
+            .initialization_script(include_str!("../custom-ui.js"))
             .build()?;
 
             Ok(())
