@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "identifier": "be.ephec.eperso.wrapper",
   "build": {
+    "beforeBuildCommand": "npm run build",
     "frontendDist": "../dist"
   },
   "app": {
