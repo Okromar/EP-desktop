@@ -15,12 +15,10 @@ jobs:
           node-version: 20
       - uses: dtolnay/rust-toolchain@stable
       - run: npm install
-      - name: Prepare EPHEC app icon
+      - name: Generate Tauri icons from EPHEC logo
         shell: pwsh
         run: |
-          Add-Type -AssemblyName System.Drawing
-          $svgUrl = "https://eperso.ephec.be/Images/logo-ephec-min.svg"
-          $icoUrl = "https://eperso.ephec.be/Images/favicon.ico"
+          npx tauri icon ephec-logo.png
 
           $canvas = New-Object System.Drawing.Bitmap 512, 512
           $g = [System.Drawing.Graphics]::FromImage($canvas)
