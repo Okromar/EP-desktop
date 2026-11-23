@@ -18,7 +18,12 @@ jobs:
       - name: Generate Tauri icons from EPHEC logo
         shell: pwsh
         run: |
-          npx tauri icon ephec-logo.png
+          $logoFile = Get-ChildItem -Path . -Filter "*.png" | Select-Object -First 1
+          if ($logoFile) {
+            npx tauri icon $logoFile.FullName
+          } else {
+            Write-Error "Aucun fichier PNG trouvé à la racine du dépôt"
+          }
 
           $canvas = New-Object System.Drawing.Bitmap 512, 512
           $g = [System.Drawing.Graphics]::FromImage($canvas)
