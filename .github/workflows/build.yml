@@ -15,6 +15,15 @@ jobs:
           node-version: 20
       - uses: dtolnay/rust-toolchain@stable
       - run: npm install
+      - name: Generate default app icons
+        shell: pwsh
+        run: |
+          Add-Type -AssemblyName System.Drawing
+          $bmp = New-Object System.Drawing.Bitmap 512, 512
+          $g = [System.Drawing.Graphics]::FromImage($bmp)
+          $g.Clear([System.Drawing.Color]::FromArgb(0, 85, 165))
+          $bmp.Save("app-icon.png", [System.Drawing.Imaging.ImageFormat]::Png)
+          npx tauri icon app-icon.png
       - run: npm run tauri build
       - uses: actions/upload-artifact@v4
         with:
