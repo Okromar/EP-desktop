@@ -284,6 +284,23 @@
         border-color: #ef4444 !important;
         border-width: 2px !important;
       }
+
+      #epTestNotifBtn {
+        background: #eff6ff;
+        color: #1d4ed8;
+        border: 1px solid #bfdbfe;
+        border-radius: 7px;
+        padding: 3px 10px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      #epTestNotifBtn:hover {
+        background: #2563eb;
+        color: #ffffff;
+        border-color: #2563eb;
+      }
     `;
     document.head.appendChild(style);
 
@@ -349,18 +366,74 @@
       navbarRight.classList.add("ep-user-pill");
     }
 
-    // --- NOTIFICATIONS AVANT LE COURS + LOCAL ---
+    // --- NOTIFICATIONS AVANT LE COURS + MODE DEV ---
     function initCourseNotifications() {
       if (document.getElementById("ep-notif-control")) return;
 
       const savedLead = localStorage.getItem("ep_notif_minutes") || "15";
+
+      function cleanText(raw) {
+        if (!raw) return "";
+        const div = document.createElement("div");
+        div.innerHTML = raw;
+        return (div.textContent || "").trim();
+      }
+
+      function showInAppToast(title, body, isTest) {
+        const old = document.getElementById("ep-toast-banner");
+        if (old) old.remove();
+
+        const banner = document.createElement("div");
+        banner.id = "ep-toast-banner";
+        banner.style.cssText =
+          "position:fixed;bottom:22px;right:22px;z-index:9999;background:#0f172a;color:#fff;padding:14px 18px;border-radius:12px;border-left:4px solid #3b82f6;box-shadow:0 12px 30px rgba(0,0,0,0.3);max-width:360px;font-size:0.86rem;";
+        banner.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <span style="font-weight:700;">${isTest ? "🧪 [TEST DEV] " : "🔔 "}${title}</span>
+            <button id="epCloseToast" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1rem;padding:0 0 0 10px;">×</button>
+          </div>
+          <div style="color:#cbd5e1;">${body}</div>
+        `;
+        document.body.appendChild(banner);
+        document.getElementById("epCloseToast").onclick = () => banner.remove();
+        setTimeout(() => banner.remove(), 9000);
+      }
+
+      function sendCourseNotification(title, startTimeStr, room, minutesLeft, isTest = false) {
+        const bodyParts = [`Début à ${startTimeStr} (dans ${minutesLeft} min)`];
+        if (room) bodyParts.push(`Local : ${room}`);
+        const body = bodyParts.join(" • ");
+
+        // Affiche toujours le toast dans l'app en mode test, ou en secours si les notifs OS sont refusées
+        if (isTest || !("Notification" in window) || Notification.permission !== "granted") {
+          showInAppToast(title, body, isTest);
+        }
+
+        if ("Notification" in window) {
+          if (Notification.permission === "granted") {
+            new Notification((isTest ? "[TEST] " : "") + title, {
+              body: body,
+              icon: "/Images/favicon.ico"
+            });
+          } else if (Notification.permission === "default") {
+            Notification.requestPermission().then((perm) => {
+              if (perm === "granted") {
+                new Notification((isTest ? "[TEST] " : "") + title, {
+                  body: body,
+                  icon: "/Images/favicon.ico"
+                });
+              }
+            });
+          }
+        }
+      }
 
       const weekSelector = document.getElementById("weekSelector");
       if (weekSelector && weekSelector.parentElement) {
         const wrap = document.createElement("div");
         wrap.id = "ep-notif-control";
         wrap.style.cssText =
-          "display:inline-flex;align-items:center;gap:8px;margin-left:10px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:5px 12px;font-size:0.84rem;font-weight:500;color:#0f172a;box-shadow:0 1px 3px rgba(0,0,0,0.04);";
+          "display:inline-flex;align-items:center;gap:10px;margin-left:10px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:5px 12px;font-size:0.84rem;font-weight:500;color:#0f172a;box-shadow:0 1px 3px rgba(0,0,0,0.04);";
 
         wrap.innerHTML = `
           <i class="fas fa-bell" style="color:#2563eb;"></i>
@@ -372,6 +445,9 @@
             <option value="15">15 min avant</option>
             <option value="30">30 min avant</option>
           </select>
+          <button type="button" id="epTestNotifBtn" title="Simuler une notification de cours maintenant">
+            <i class="fas fa-flask"></i> Tester notif
+          </button>
         `;
 
         weekSelector.parentElement.appendChild(wrap);
@@ -384,37 +460,38 @@
             Notification.requestPermission();
           }
         });
+
+        // Bouton Mode Dev pour tester la notification immédiatement
+        document.getElementById("epTestNotifBtn").addEventListener("click", () => {
+          const lead = parseInt(selectEl.value, 10) || 15;
+          let sampleTitle = "Électricité et Circuits DC";
+          let sampleRoom = "G-259";
+          let sampleTime = new Date(Date.now() + lead * 60000).toLocaleTimeString("fr-FR", {
+            hour: "2-digit",
+            minute: "2-digit"
+          });
+
+          // Si le calendrier a des événements chargés, prend le prochain cours réel (ou le premier de la semaine)
+          if (window.calendar && typeof window.calendar.getEvents === "function") {
+            const events = window.calendar.getEvents().filter((e) => e.start);
+            events.sort((a, b) => a.start.getTime() - b.start.getTime());
+            const nextEv = events.find((e) => e.start.getTime() > Date.now()) || events[0];
+            if (nextEv) {
+              sampleTitle = nextEv.title;
+              sampleRoom = cleanText(nextEv.extendedProps?.Location || "") || "Local non précisé";
+              sampleTime = nextEv.start.toLocaleTimeString("fr-FR", {
+                hour: "2-digit",
+                minute: "2-digit"
+              });
+            }
+          }
+
+          sendCourseNotification(sampleTitle, sampleTime, sampleRoom, lead, true);
+        });
       }
 
       if ("Notification" in window && Notification.permission === "default" && savedLead !== "0") {
         Notification.requestPermission();
-      }
-
-      function cleanText(raw) {
-        if (!raw) return "";
-        const div = document.createElement("div");
-        div.innerHTML = raw;
-        return (div.textContent || "").trim();
-      }
-
-      function sendCourseNotification(title, startTimeStr, room, minutesLeft) {
-        const bodyParts = [`Début à ${startTimeStr} (dans ${minutesLeft} min)`];
-        if (room) bodyParts.push(`Local : ${room}`);
-        const body = bodyParts.join(" • ");
-
-        if ("Notification" in window && Notification.permission === "granted") {
-          new Notification(title, {
-            body: body,
-            icon: "/Images/favicon.ico"
-          });
-        } else {
-          const banner = document.createElement("div");
-          banner.style.cssText =
-            "position:fixed;bottom:20px;right:20px;z-index:9999;background:#0f172a;color:#fff;padding:14px 18px;border-radius:12px;border-left:4px solid #3b82f6;box-shadow:0 10px 25px rgba(0,0,0,0.25);max-width:340px;font-size:0.86rem;";
-          banner.innerHTML = `<div style="font-weight:700;margin-bottom:4px;">${title}</div><div>${body}</div>`;
-          document.body.appendChild(banner);
-          setTimeout(() => banner.remove(), 10000);
-        }
       }
 
       function checkUpcomingEvents() {
@@ -441,7 +518,7 @@
 
             if (!sessionStorage.getItem(notifKey)) {
               sessionStorage.setItem(notifKey, "1");
-              sendCourseNotification(ev.title, startFormatted, room, leadMinutes);
+              sendCourseNotification(ev.title, startFormatted, room, leadMinutes, false);
             }
           }
         });
