@@ -24,7 +24,6 @@
         overflow-x: hidden !important;
       }
 
-      /* 1. SUPPRESSION TOTALE DE LA BARRE LATÉRALE & DU BOUTON MENU */
       nav#sidebar,
       #sidebarCollapse {
         display: none !important;
@@ -32,7 +31,6 @@
         margin: 0 !important;
       }
 
-      /* CONTENU PLEINE LARGEUR SANS DÉCALAGE */
       .wrapper {
         display: block !important;
         width: 100% !important;
@@ -55,7 +53,6 @@
         padding: 0 !important;
       }
 
-      /* 2. BARRE SUPÉRIEURE & LOGO EPHEC */
       nav.navbar.fixed-top {
         height: var(--ep-nav-h) !important;
         background: var(--ep-nav-bg) !important;
@@ -90,7 +87,6 @@
         margin-right: 16px !important;
       }
 
-      /* Onglets de navigation */
       #ep-quick-tabs {
         display: flex;
         align-items: center;
@@ -124,7 +120,6 @@
         box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
       }
 
-      /* Menu déroulant "Plus" pour les pages secondaires */
       .ep-dropdown {
         position: relative;
       }
@@ -177,7 +172,6 @@
         gap: 8px;
       }
 
-      /* 3. REFONTE COMPLÈTE DE L'INTERFACE DES HORAIRES */
       .body-content > h3 {
         font-size: 1.45rem !important;
         font-weight: 700 !important;
@@ -186,7 +180,6 @@
         letter-spacing: -0.02em !important;
       }
 
-      /* Badges légende Cours / Examens / Événements */
       .body-content .form-row .col-auto {
         border-radius: 999px !important;
         padding: 4px 14px !important;
@@ -195,7 +188,6 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
       }
 
-      /* Sélecteur de semaine */
       #weekSelector {
         border-radius: 10px !important;
         border: 1px solid var(--ep-border) !important;
@@ -207,7 +199,6 @@
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
       }
 
-      /* Conteneur principal du calendrier */
       #calendar-container {
         background: var(--ep-card-bg) !important;
         border: 1px solid var(--ep-border) !important;
@@ -217,7 +208,6 @@
         margin-top: 10px !important;
       }
 
-      /* Barre d'outils FullCalendar */
       .fc .fc-toolbar.fc-header-toolbar {
         margin-bottom: 18px !important;
       }
@@ -236,7 +226,6 @@
         border-radius: 8px !important;
         padding: 6px 12px !important;
         box-shadow: none !important;
-        transition: all 0.15s ease !important;
       }
       .fc .fc-button-primary:hover {
         background-color: #e2e8f0 !important;
@@ -251,7 +240,6 @@
         border-radius: 8px !important;
       }
 
-      /* En-têtes des jours */
       .fc-theme-standard th {
         background: #f8fafc !important;
         border-color: var(--ep-border) !important;
@@ -264,7 +252,6 @@
         text-decoration: none !important;
       }
 
-      /* Grille horaire */
       .fc-theme-standard td,
       .fc-theme-standard .fc-scrollgrid {
         border-color: #edf2f7 !important;
@@ -278,31 +265,21 @@
         color: var(--ep-text-muted) !important;
       }
 
-      /* Colonne "Aujourd'hui" */
       .fc .fc-day-today {
         background-color: rgba(37, 99, 235, 0.04) !important;
       }
 
-      /* Cartes des cours (Events) */
       .fc-timegrid-event {
         border-radius: 9px !important;
         border: none !important;
         border-left: 4px solid rgba(255, 255, 255, 0.75) !important;
         box-shadow: 0 3px 10px rgba(15, 23, 42, 0.12) !important;
         padding: 3px 5px !important;
-        transition: transform 0.12s ease, box-shadow 0.12s ease !important;
-      }
-      .fc-timegrid-event:hover {
-        transform: translateY(-1px) !important;
-        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.18) !important;
-        z-index: 10 !important;
       }
       .fc-event-main {
         font-size: 0.8rem !important;
         line-height: 1.3 !important;
       }
-
-      /* Ligne de l'heure actuelle */
       .fc .fc-timegrid-now-indicator-line {
         border-color: #ef4444 !important;
         border-width: 2px !important;
@@ -310,7 +287,6 @@
     `;
     document.head.appendChild(style);
 
-    // 2. Remplacement propre du logo dans la navbar avec le SVG officiel EPHEC
     const navbarLeft = document.querySelector("nav.navbar > div:first-child");
     if (navbarLeft && !document.getElementById("ep-quick-tabs")) {
       const oldLogo = document.getElementById("logo-ephec");
@@ -342,7 +318,6 @@
         tabsContainer.appendChild(a);
       });
 
-      // Menu "Plus" pour accéder aux autres rubriques sans sidebar
       const moreWrap = document.createElement("div");
       moreWrap.className = "ep-dropdown";
       moreWrap.innerHTML = `
@@ -373,6 +348,110 @@
     if (navbarRight) {
       navbarRight.classList.add("ep-user-pill");
     }
+
+    // --- NOTIFICATIONS AVANT LE COURS + LOCAL ---
+    function initCourseNotifications() {
+      if (document.getElementById("ep-notif-control")) return;
+
+      const savedLead = localStorage.getItem("ep_notif_minutes") || "15";
+
+      const weekSelector = document.getElementById("weekSelector");
+      if (weekSelector && weekSelector.parentElement) {
+        const wrap = document.createElement("div");
+        wrap.id = "ep-notif-control";
+        wrap.style.cssText =
+          "display:inline-flex;align-items:center;gap:8px;margin-left:10px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:5px 12px;font-size:0.84rem;font-weight:500;color:#0f172a;box-shadow:0 1px 3px rgba(0,0,0,0.04);";
+
+        wrap.innerHTML = `
+          <i class="fas fa-bell" style="color:#2563eb;"></i>
+          <span>Rappel :</span>
+          <select id="epNotifLead" style="border:none;background:transparent;font-weight:600;color:#0f172a;cursor:pointer;outline:none;">
+            <option value="0">Désactivé</option>
+            <option value="5">5 min avant</option>
+            <option value="10">10 min avant</option>
+            <option value="15">15 min avant</option>
+            <option value="30">30 min avant</option>
+          </select>
+        `;
+
+        weekSelector.parentElement.appendChild(wrap);
+        const selectEl = document.getElementById("epNotifLead");
+        selectEl.value = savedLead;
+
+        selectEl.addEventListener("change", () => {
+          localStorage.setItem("ep_notif_minutes", selectEl.value);
+          if (selectEl.value !== "0" && "Notification" in window && Notification.permission === "default") {
+            Notification.requestPermission();
+          }
+        });
+      }
+
+      if ("Notification" in window && Notification.permission === "default" && savedLead !== "0") {
+        Notification.requestPermission();
+      }
+
+      function cleanText(raw) {
+        if (!raw) return "";
+        const div = document.createElement("div");
+        div.innerHTML = raw;
+        return (div.textContent || "").trim();
+      }
+
+      function sendCourseNotification(title, startTimeStr, room, minutesLeft) {
+        const bodyParts = [`Début à ${startTimeStr} (dans ${minutesLeft} min)`];
+        if (room) bodyParts.push(`Local : ${room}`);
+        const body = bodyParts.join(" • ");
+
+        if ("Notification" in window && Notification.permission === "granted") {
+          new Notification(title, {
+            body: body,
+            icon: "/Images/favicon.ico"
+          });
+        } else {
+          const banner = document.createElement("div");
+          banner.style.cssText =
+            "position:fixed;bottom:20px;right:20px;z-index:9999;background:#0f172a;color:#fff;padding:14px 18px;border-radius:12px;border-left:4px solid #3b82f6;box-shadow:0 10px 25px rgba(0,0,0,0.25);max-width:340px;font-size:0.86rem;";
+          banner.innerHTML = `<div style="font-weight:700;margin-bottom:4px;">${title}</div><div>${body}</div>`;
+          document.body.appendChild(banner);
+          setTimeout(() => banner.remove(), 10000);
+        }
+      }
+
+      function checkUpcomingEvents() {
+        const leadMinutes = parseInt(localStorage.getItem("ep_notif_minutes") || "15", 10);
+        if (!leadMinutes || leadMinutes <= 0) return;
+        if (!window.calendar || typeof window.calendar.getEvents !== "function") return;
+
+        const now = Date.now();
+        const leadMs = leadMinutes * 60 * 1000;
+        const events = window.calendar.getEvents();
+
+        events.forEach((ev) => {
+          if (!ev.start) return;
+          const startMs = ev.start.getTime();
+          const diffMs = startMs - now;
+
+          if (diffMs <= leadMs + 5000 && diffMs >= leadMs - 65000) {
+            const room = cleanText(ev.extendedProps?.Location || "");
+            const startFormatted = ev.start.toLocaleTimeString("fr-FR", {
+              hour: "2-digit",
+              minute: "2-digit"
+            });
+            const notifKey = `ep_notified_${ev.title}_${startMs}_${leadMinutes}`;
+
+            if (!sessionStorage.getItem(notifKey)) {
+              sessionStorage.setItem(notifKey, "1");
+              sendCourseNotification(ev.title, startFormatted, room, leadMinutes);
+            }
+          }
+        });
+      }
+
+      setTimeout(checkUpcomingEvents, 3000);
+      setInterval(checkUpcomingEvents, 30000);
+    }
+
+    initCourseNotifications();
   }
 
   if (document.readyState === "loading") {
