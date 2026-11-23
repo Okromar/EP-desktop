@@ -399,15 +399,34 @@
         setTimeout(() => banner.remove(), 9000);
       }
 
-      function sendCourseNotification(title, startTimeStr, room, minutesLeft, isTest = false) {
+      async function sendCourseNotification(title, startTimeStr, room, minutesLeft, isTest = false) {
         const bodyParts = [`Début à ${startTimeStr} (dans ${minutesLeft} min)`];
         if (room) bodyParts.push(`Local : ${room}`);
         const body = bodyParts.join(" • ");
+        const notifTitle = (isTest ? "[TEST] " : "") + title;
 
-        // Affiche toujours le toast dans l'app en mode test, ou en secours si les notifs OS sont refusées
-        if (isTest || !("Notification" in window) || Notification.permission !== "granted") {
-          showInAppToast(title, body, isTest);
+        // 1. Vraie notification native Windows 11 via Tauri v2
+        try {
+          if (window.__TAURI__ && window.__TAURI__.notification) {
+            const { isPermissionGranted, requestPermission, sendNotification } = window.__TAURI__.notification;
+            let granted = await isPermissionGranted();
+            if (!granted) {
+              const permission = await requestPermission();
+              granted = permission === "granted";
+            }
+            if (granted) {
+              sendNotification({ title: notifTitle, body: body });
+            }
+          }
+        } catch (err) {
+          console.error("Erreur notification Tauri:", err);
         }
+
+        // 2. Garde aussi le toast visuel dans l'app lors d'un clic sur "Tester notif"
+        if (isTest) {
+          showInAppToast(title, body, true);
+        }
+      }
 
         if ("Notification" in window) {
           if (Notification.permission === "granted") {
