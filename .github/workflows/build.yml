@@ -15,15 +15,33 @@ jobs:
           node-version: 20
       - uses: dtolnay/rust-toolchain@stable
       - run: npm install
-      - name: Generate default app icons
+      - name: Prepare EPHEC app icon
         shell: pwsh
         run: |
           Add-Type -AssemblyName System.Drawing
-          $bmp = New-Object System.Drawing.Bitmap 512, 512
-          $g = [System.Drawing.Graphics]::FromImage($bmp)
-          $g.Clear([System.Drawing.Color]::FromArgb(0, 85, 165))
-          $bmp.Save("app-icon.png", [System.Drawing.Imaging.ImageFormat]::Png)
-          npx tauri icon app-icon.png
+          $svgUrl = "https://eperso.ephec.be/Images/logo-ephec-min.svg"
+          $icoUrl = "https://eperso.ephec.be/Images/favicon.ico"
+
+          $canvas = New-Object System.Drawing.Bitmap 512, 512
+          $g = [System.Drawing.Graphics]::FromImage($canvas)
+          $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+          $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+          $g.Clear([System.Drawing.Color]::FromArgb(15, 23, 42))
+
+          try {
+            Invoke-WebRequest -Uri $icoUrl -OutFile "ephec-favicon.ico" -UseBasicParsing
+            $icon = New-Object System.Drawing.Icon("ephec-favicon.ico", 256, 256)
+            $bmp = $icon.ToBitmap()
+            $g.DrawImage($bmp, 64, 64, 384, 384)
+          } catch {
+            # Repli propre si le téléchargement échoue
+            $font = New-Object System.Drawing.Font("Segoe UI", 96, [System.Drawing.FontStyle]::Bold)
+            $brush = [System.Drawing.Brushes]::White
+            $g.DrawString("EP", $font, $brush, 115, 165)
+          }
+
+          $canvas.Save("ephec-icon.png", [System.Drawing.Imaging.ImageFormat]::Png)
+          npx tauri icon ephec-icon.png
       - run: npm run tauri build
       - uses: actions/upload-artifact@v4
         with:
