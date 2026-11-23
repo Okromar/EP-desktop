@@ -34,8 +34,3 @@ pub fn run() {
         .run(tauri::generate_context!())
         .expect("Erreur au lancement de l'application Tauri");
 }
-            Ok(())
-        })
-        .run(tauri::generate_context!())
-        .expect("Erreur au lancement de l'application Tauri");
-}
