@@ -1,3 +1,4 @@
+use tauri::Manager;
 use tauri_plugin_opener::OpenerExt;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -28,6 +29,11 @@ pub fn run() {
                 });
             }
 
+            Ok(())
+        })
+        .run(tauri::generate_context!())
+        .expect("Erreur au lancement de l'application Tauri");
+}
             Ok(())
         })
         .run(tauri::generate_context!())
