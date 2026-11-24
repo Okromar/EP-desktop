@@ -366,7 +366,6 @@
       navbarRight.classList.add("ep-user-pill");
     }
 
-    // --- NOTIFICATIONS AVANT LE COURS + MODE DEV ---
     function initCourseNotifications() {
       if (document.getElementById("ep-notif-control")) return;
 
@@ -389,7 +388,7 @@
           "position:fixed;bottom:22px;right:22px;z-index:9999;background:#0f172a;color:#fff;padding:14px 18px;border-radius:12px;border-left:4px solid #3b82f6;box-shadow:0 12px 30px rgba(0,0,0,0.3);max-width:360px;font-size:0.86rem;";
         banner.innerHTML = `
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-            <span style="font-weight:700;">${isTest ? "🧪 [TEST DEV] " : "🔔 "}${title}</span>
+            <span style="font-weight:700;">${isTest ? "[TEST] " : ""}${title}</span>
             <button id="epCloseToast" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1rem;padding:0 0 0 10px;">×</button>
           </div>
           <div style="color:#cbd5e1;">${body}</div>
@@ -399,13 +398,12 @@
         setTimeout(() => banner.remove(), 9000);
       }
 
-      async function sendCourseNotification(title, startTimeStr, room, minutesLeft, isTest = false) {
+      async function sendCourseNotification(title, startTimeStr, room, minutesLeft, isTest) {
         const bodyParts = [`Début à ${startTimeStr} (dans ${minutesLeft} min)`];
         if (room) bodyParts.push(`Local : ${room}`);
         const body = bodyParts.join(" • ");
         const notifTitle = (isTest ? "[TEST] " : "") + title;
 
-        // 1. Vraie notification native Windows 11 via Tauri v2
         try {
           if (window.__TAURI__ && window.__TAURI__.notification) {
             const { isPermissionGranted, requestPermission, sendNotification } = window.__TAURI__.notification;
@@ -422,28 +420,8 @@
           console.error("Erreur notification Tauri:", err);
         }
 
-        // 2. Garde aussi le toast visuel dans l'app lors d'un clic sur "Tester notif"
         if (isTest) {
           showInAppToast(title, body, true);
-        }
-      }
-
-        if ("Notification" in window) {
-          if (Notification.permission === "granted") {
-            new Notification((isTest ? "[TEST] " : "") + title, {
-              body: body,
-              icon: "/Images/favicon.ico"
-            });
-          } else if (Notification.permission === "default") {
-            Notification.requestPermission().then((perm) => {
-              if (perm === "granted") {
-                new Notification((isTest ? "[TEST] " : "") + title, {
-                  body: body,
-                  icon: "/Images/favicon.ico"
-                });
-              }
-            });
-          }
         }
       }
 
@@ -464,8 +442,8 @@
             <option value="15">15 min avant</option>
             <option value="30">30 min avant</option>
           </select>
-          <button type="button" id="epTestNotifBtn" title="Simuler une notification de cours maintenant">
-            <i class="fas fa-flask"></i> Tester notif
+          <button type="button" id="epTestNotifBtn" title="Simuler une notification Windows maintenant">
+            Tester notif
           </button>
         `;
 
@@ -475,12 +453,8 @@
 
         selectEl.addEventListener("change", () => {
           localStorage.setItem("ep_notif_minutes", selectEl.value);
-          if (selectEl.value !== "0" && "Notification" in window && Notification.permission === "default") {
-            Notification.requestPermission();
-          }
         });
 
-        // Bouton Mode Dev pour tester la notification immédiatement
         document.getElementById("epTestNotifBtn").addEventListener("click", () => {
           const lead = parseInt(selectEl.value, 10) || 15;
           let sampleTitle = "Électricité et Circuits DC";
@@ -490,7 +464,6 @@
             minute: "2-digit"
           });
 
-          // Si le calendrier a des événements chargés, prend le prochain cours réel (ou le premier de la semaine)
           if (window.calendar && typeof window.calendar.getEvents === "function") {
             const events = window.calendar.getEvents().filter((e) => e.start);
             events.sort((a, b) => a.start.getTime() - b.start.getTime());
@@ -507,10 +480,6 @@
 
           sendCourseNotification(sampleTitle, sampleTime, sampleRoom, lead, true);
         });
-      }
-
-      if ("Notification" in window && Notification.permission === "default" && savedLead !== "0") {
-        Notification.requestPermission();
       }
 
       function checkUpcomingEvents() {
