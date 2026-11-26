@@ -18,7 +18,11 @@ body {
 }
 
 nav#sidebar,
-#sidebarCollapse {
+#sidebarCollapse,
+#menu-toggle,
+button.navbar-toggler,
+[data-target="#sidebar"],
+[data-bs-target="#sidebar"] {
   display: none !important;
   width: 0 !important;
   margin: 0 !important;
@@ -87,39 +91,42 @@ h1#ePerso {
 }
 
 #ep-quick-tabs {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-wrap: nowrap;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-wrap: nowrap !important;
 }
 
-.ep-tab {
-  color: #94a3b8 !important;
+#ep-quick-tabs .ep-tab,
+#ep-quick-tabs button.ep-tab {
+  color: #cbd5e1 !important;
   text-decoration: none !important;
-  font-size: 0.83rem;
-  font-weight: 500;
-  padding: 6px 11px;
-  border-radius: 8px;
-  transition: all 0.15s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  white-space: nowrap;
-  flex-shrink: 0;
+  font-size: 0.83rem !important;
+  font-weight: 500 !important;
+  padding: 6px 11px !important;
+  border-radius: 8px !important;
+  transition: all 0.15s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  border: none !important;
+  background: transparent !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  box-shadow: none !important;
 }
 
-.ep-tab:hover {
+#ep-quick-tabs .ep-tab:hover,
+#ep-quick-tabs button.ep-tab:hover {
   color: #ffffff !important;
-  background: rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.1) !important;
 }
 
-.ep-tab.active {
+#ep-quick-tabs .ep-tab.active {
   color: #ffffff !important;
-  background: var(--ep-accent);
-  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
+  background: var(--ep-accent) !important;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4) !important;
 }
 
 #ep-floating-menu {
@@ -218,7 +225,10 @@ h1#ePerso {
   margin-top: 10px !important;
 }
 
-.fc .fc-toolbar.fc-header-toolbar { margin-bottom: 18px !important; }
+.fc .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 18px !important;
+}
+
 .fc .fc-toolbar-title {
   font-size: 1.2rem !important;
   font-weight: 700 !important;
@@ -237,14 +247,20 @@ h1#ePerso {
   box-shadow: none !important;
 }
 
-.fc .fc-button-primary:hover { background-color: #e2e8f0 !important; }
+.fc .fc-button-primary:hover {
+  background-color: #e2e8f0 !important;
+}
+
 .fc .fc-button-primary.fc-button-active {
   background-color: var(--ep-accent) !important;
   border-color: var(--ep-accent) !important;
   color: #ffffff !important;
 }
 
-.fc .fc-button-group > .fc-button { margin-left: 4px !important; border-radius: 8px !important; }
+.fc .fc-button-group > .fc-button {
+  margin-left: 4px !important;
+  border-radius: 8px !important;
+}
 
 .fc-theme-standard th {
   background: #f8fafc !important;
@@ -260,16 +276,23 @@ h1#ePerso {
 }
 
 .fc-theme-standard td,
-.fc-theme-standard .fc-scrollgrid { border-color: #edf2f7 !important; }
+.fc-theme-standard .fc-scrollgrid {
+  border-color: #edf2f7 !important;
+}
 
-.fc .fc-timegrid-slot { height: 2.35em !important; }
+.fc .fc-timegrid-slot {
+  height: 2.35em !important;
+}
+
 .fc .fc-timegrid-slot-label-cushion {
   font-size: 0.78rem !important;
   font-weight: 600 !important;
   color: var(--ep-text-muted) !important;
 }
 
-.fc .fc-day-today { background-color: rgba(37, 99, 235, 0.04) !important; }
+.fc .fc-day-today {
+  background-color: rgba(37, 99, 235, 0.04) !important;
+}
 
 .fc-timegrid-event {
   border-radius: 9px !important;
@@ -279,8 +302,15 @@ h1#ePerso {
   padding: 3px 5px !important;
 }
 
-.fc-event-main { font-size: 0.8rem !important; line-height: 1.3 !important; }
-.fc .fc-timegrid-now-indicator-line { border-color: #ef4444 !important; border-width: 2px !important; }
+.fc-event-main {
+  font-size: 0.8rem !important;
+  line-height: 1.3 !important;
+}
+
+.fc .fc-timegrid-now-indicator-line {
+  border-color: #ef4444 !important;
+  border-width: 2px !important;
+}
 
 #epTestNotifBtn {
   background: #eff6ff;
