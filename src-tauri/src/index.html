@@ -3,20 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EPHEC Desktop — Accueil</title>
+  <title>EPHEC — Espace</title>
   <style>
-    :root {
-      --bg-dark: #090d16;
-      --surface: #111827;
-      --surface-hover: #172033;
-      --border: rgba(255, 255, 255, 0.09);
-      --border-hover: rgba(59, 130, 246, 0.55);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --accent-blue: #2563eb;
-      --accent-orange: #ea580c;
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -25,441 +13,359 @@
 
     body {
       min-height: 100vh;
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-      background:
-        radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.16), transparent 42%),
-        radial-gradient(circle at 85% 85%, rgba(234, 88, 12, 0.12), transparent 42%),
-        var(--bg-dark);
-      color: var(--text-main);
+      background-color: #f7f7f5;
+      color: #161616;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 28px;
+      padding: 40px 24px;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .launcher {
+    .page {
       width: 100%;
-      max-width: 720px;
-      background: rgba(17, 24, 39, 0.88);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 34px;
-      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+      max-width: 680px;
     }
 
-    .header {
+    .topbar {
       display: flex;
-      align-items: center;
+      align-items: baseline;
       justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 26px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border);
+      padding-bottom: 18px;
+      border-bottom: 1px solid #161616;
+      margin-bottom: 36px;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .brand-badge {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 1.05rem;
+    .title-group h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
       letter-spacing: -0.03em;
-      color: #fff;
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+      color: #161616;
     }
 
-    .brand-text h1 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .brand-text p {
+    .title-group p {
       font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-top: 2px;
+      color: #666662;
+      margin-top: 4px;
     }
 
-    .date-pill {
+    .meta-right {
+      text-align: right;
       font-size: 0.78rem;
-      color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      border-radius: 999px;
-      text-transform: capitalize;
-      white-space: nowrap;
+      color: #666662;
+      font-variant-numeric: tabular-nums;
     }
 
-    .auto-banner {
+    .ascii-mark {
+      font-family: ui-monospace, "Cascadia Code", "Consolas", monospace;
+      font-size: 0.72rem;
+      line-height: 1.15;
+      color: #8c8c86;
+      margin-bottom: 4px;
+      user-select: none;
+    }
+
+    .auto-notice {
       display: none;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      background: rgba(37, 99, 235, 0.14);
-      border: 1px solid rgba(59, 130, 246, 0.35);
-      border-radius: 12px;
-      padding: 11px 16px;
-      margin-bottom: 20px;
-      font-size: 0.85rem;
+      background: #ffffff;
+      border: 1px solid #161616;
+      padding: 10px 14px;
+      margin-bottom: 24px;
+      font-size: 0.82rem;
     }
 
-    .auto-banner.visible {
+    .auto-notice.active {
       display: flex;
     }
 
-    .auto-banner button {
-      background: #1e293b;
-      color: #f8fafc;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px;
-      padding: 5px 11px;
-      font-size: 0.78rem;
-      font-weight: 600;
+    .auto-notice button {
+      background: none;
+      border: 1px solid #161616;
+      color: #161616;
+      padding: 4px 10px;
+      font-size: 0.76rem;
       cursor: pointer;
-    }
-
-    .auto-banner button:hover {
-      background: #334155;
-    }
-
-    .main-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 22px;
-    }
-
-    .portal-card {
-      position: relative;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 22px;
-      text-align: left;
-      color: var(--text-main);
-      cursor: pointer;
-      transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
       font-family: inherit;
     }
 
-    .portal-card:hover {
-      transform: translateY(-3px);
-      background: var(--surface-hover);
-      border-color: var(--border-hover);
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+    .auto-notice button:hover {
+      background: #161616;
+      color: #f7f7f5;
     }
 
-    .portal-card.moodle:hover {
-      border-color: rgba(234, 88, 12, 0.6);
+    .choices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
     }
 
-    .card-top {
+    .choice {
+      background: #ffffff;
+      border: 1px solid #e2e2dd;
+      padding: 24px;
+      text-align: left;
+      cursor: pointer;
+      color: #161616;
+      font-family: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 164px;
+      transition: border-color 0.14s ease, transform 0.14s ease;
+    }
+
+    .choice:hover {
+      border-color: #161616;
+      transform: translateY(-2px);
+    }
+
+    .choice-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 18px;
     }
 
-    .icon-box {
-      width: 42px;
-      height: 42px;
-      border-radius: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .choice-index {
+      font-family: ui-monospace, "Cascadia Code", "Consolas", monospace;
+      font-size: 0.75rem;
+      color: #777772;
     }
 
-    .icon-box.eperso {
-      background: rgba(37, 99, 235, 0.16);
-      color: #60a5fa;
-    }
-
-    .icon-box.moodle {
-      background: rgba(234, 88, 12, 0.16);
-      color: #fb923c;
-    }
-
-    .kbd-hint {
-      font-size: 0.72rem;
+    .choice-name {
+      font-size: 1.2rem;
       font-weight: 600;
-      color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      padding: 3px 8px;
-      border-radius: 6px;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
     }
 
-    .card-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .card-desc {
+    .choice-desc {
       font-size: 0.83rem;
-      color: var(--text-muted);
+      color: #666662;
       line-height: 1.45;
     }
 
-    .card-cta {
-      margin-top: auto;
+    .choice-arrow {
+      margin-top: 20px;
       font-size: 0.8rem;
-      font-weight: 600;
-      color: #60a5fa;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      color: #161616;
+      font-weight: 500;
     }
 
-    .portal-card.moodle .card-cta {
-      color: #fb923c;
-    }
-
-    .quick-section-title {
-      font-size: 0.75rem;
-      font-weight: 600;
+    .shortcuts-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
+      color: #777772;
       margin-bottom: 10px;
     }
 
-    .quick-links {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 24px;
+    .shortcuts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 32px;
     }
 
-    .quick-link {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 10px 12px;
-      color: #cbd5e1;
-      text-decoration: none;
+    .shortcut {
+      background: #ffffff;
+      border: 1px solid #e2e2dd;
+      padding: 8px 14px;
       font-size: 0.8rem;
-      font-weight: 500;
-      text-align: center;
-      transition: all 0.15s ease;
+      color: #161616;
+      text-decoration: none;
+      transition: border-color 0.14s ease, background-color 0.14s ease;
     }
 
-    .quick-link:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.2);
+    .shortcut:hover {
+      border-color: #161616;
+      background-color: #efefec;
     }
 
-    .footer {
+    .bottom-bar {
+      padding-top: 16px;
+      border-top: 1px solid #e2e2dd;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-      font-size: 0.82rem;
-      color: var(--text-muted);
+      font-size: 0.8rem;
+      color: #666662;
     }
 
-    .remember-label {
+    .remember {
       display: flex;
       align-items: center;
       gap: 8px;
       cursor: pointer;
       user-select: none;
-      color: #cbd5e1;
+      color: #161616;
     }
 
-    .remember-label input {
-      accent-color: var(--accent-blue);
-      width: 15px;
-      height: 15px;
+    .remember input {
+      accent-color: #161616;
       cursor: pointer;
     }
 
     .reset-btn {
       background: none;
       border: none;
-      color: #94a3b8;
+      color: #666662;
       font-size: 0.78rem;
-      cursor: pointer;
       text-decoration: underline;
+      cursor: pointer;
       font-family: inherit;
     }
 
     .reset-btn:hover {
-      color: #f8fafc;
+      color: #161616;
     }
 
-    @media (max-width: 640px) {
-      .main-grid { grid-template-columns: 1fr; }
-      .quick-links { grid-template-columns: 1fr 1fr; }
-      .header { flex-direction: column; align-items: flex-start; }
+    @media (max-width: 580px) {
+      .choices { grid-template-columns: 1fr; }
+      .topbar { flex-direction: column; gap: 10px; }
+      .meta-right { text-align: left; }
     }
   </style>
 </head>
 <body>
-  <div class="launcher">
-    <div class="header">
-      <div class="brand">
-        <div class="brand-badge">EP</div>
-        <div class="brand-text">
-          <h1>EPHEC Desktop</h1>
-          <p>Sélectionne ton environnement de travail</p>
-        </div>
+  <main class="page">
+    <header class="topbar">
+      <div class="title-group">
+        <h1>EPHEC</h1>
+        <p>Choisir un espace de travail</p>
       </div>
-      <div class="date-pill" id="todayLabel"></div>
+      <div class="meta-right">
+        <div class="ascii-mark" aria-hidden="true">[ ephec // desktop ]</div>
+        <div id="dateText"></div>
+      </div>
+    </header>
+
+    <div class="auto-notice" id="autoNotice">
+      <span id="autoNoticeText"></span>
+      <button type="button" id="cancelAuto">Annuler</button>
     </div>
 
-    <div class="auto-banner" id="autoBanner">
-      <span id="autoBannerText">Ouverture automatique dans 2s...</span>
-      <button type="button" id="cancelAutoBtn">Annuler</button>
-    </div>
-
-    <div class="main-grid">
-      <button type="button" class="portal-card eperso" id="btnEperso">
-        <div class="card-top">
-          <div class="icon-box eperso">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="4" width="18" height="18" rx="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-          </div>
-          <span class="kbd-hint">Touche 1</span>
-        </div>
+    <section class="choices">
+      <button type="button" class="choice" id="goEperso">
         <div>
-          <div class="card-title">ePerso</div>
-          <div class="card-desc">Consultation des horaires, résultats d'examens, occupation des locaux et documents administratifs.</div>
+          <div class="choice-head">
+            <span class="choice-index">01</span>
+            <span class="choice-index">[1]</span>
+          </div>
+          <div class="choice-name">ePerso</div>
+          <div class="choice-desc">Horaires, résultats, occupation des locaux et documents.</div>
         </div>
-        <div class="card-cta">Ouvrir ePerso →</div>
+        <div class="choice-arrow">Ouvrir →</div>
       </button>
 
-      <button type="button" class="portal-card moodle" id="btnMoodle">
-        <div class="card-top">
-          <div class="icon-box moodle">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-              <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
-            </svg>
-          </div>
-          <span class="kbd-hint">Touche 2</span>
-        </div>
+      <button type="button" class="choice" id="goMoodle">
         <div>
-          <div class="card-title">Moodle</div>
-          <div class="card-desc">Accès aux supports de cours, dépôts de travaux, annonces des professeurs et tests en ligne.</div>
+          <div class="choice-head">
+            <span class="choice-index">02</span>
+            <span class="choice-index">[2]</span>
+          </div>
+          <div class="choice-name">Moodle</div>
+          <div class="choice-desc">Cours, dépôts de travaux, annonces et ressources.</div>
         </div>
-        <div class="card-cta">Ouvrir Moodle →</div>
+        <div class="choice-arrow">Ouvrir →</div>
       </button>
-    </div>
+    </section>
 
-    <div class="quick-section-title">Accès direct</div>
-    <div class="quick-links">
-      <a class="quick-link" href="https://eperso.ephec.be/HeHoraire/HoraireV2">Horaires</a>
-      <a class="quick-link" href="https://eperso.ephec.be/HeResultat/Resultat">Résultats</a>
-      <a class="quick-link" href="https://eperso.ephec.be/HeOccupationLocaux/OccupationLocaux">Locaux libres</a>
-      <a class="quick-link" href="https://moodle.ephec.be/my/courses.php">Mes cours</a>
-    </div>
+    <div class="shortcuts-label">Accès direct</div>
+    <nav class="shortcuts">
+      <a class="shortcut" href="https://eperso.ephec.be/HeHoraire/HoraireV2">Horaires</a>
+      <a class="shortcut" href="https://eperso.ephec.be/HeResultat/Resultat">Résultats</a>
+      <a class="shortcut" href="https://eperso.ephec.be/HeOccupationLocaux/OccupationLocaux">Locaux libres</a>
+      <a class="shortcut" href="https://moodle.ephec.be/my/courses.php">Mes cours</a>
+    </nav>
 
-    <div class="footer">
-      <label class="remember-label">
-        <input type="checkbox" id="rememberCheck" />
+    <footer class="bottom-bar">
+      <label class="remember">
+        <input type="checkbox" id="rememberPref" />
         <span>Mémoriser ce choix au démarrage</span>
       </label>
-      <button type="button" class="reset-btn" id="resetPrefBtn" style="display:none;">
-        Effacer le choix mémorisé
+      <button type="button" class="reset-btn" id="clearPref" style="display:none;">
+        Réinitialiser
       </button>
-    </div>
-  </div>
+    </footer>
+  </main>
 
   <script>
     const URL_EPERSO = "https://eperso.ephec.be/";
     const URL_MOODLE = "https://moodle.ephec.be/my/index.php";
-    const STORAGE_KEY = "ephec_startup_url";
+    const PREF_KEY = "ephec_startup_url";
 
-    const todayEl = document.getElementById("todayLabel");
-    todayEl.textContent = new Date().toLocaleDateString("fr-FR", {
-      weekday: "long",
+    document.getElementById("dateText").textContent = new Date().toLocaleDateString("fr-FR", {
+      weekday: "short",
       day: "numeric",
-      month: "long"
+      month: "short"
     });
 
-    const rememberCheck = document.getElementById("rememberCheck");
-    const resetPrefBtn = document.getElementById("resetPrefBtn");
-    const autoBanner = document.getElementById("autoBanner");
-    const autoBannerText = document.getElementById("autoBannerText");
-    const cancelAutoBtn = document.getElementById("cancelAutoBtn");
+    const rememberPref = document.getElementById("rememberPref");
+    const clearPref = document.getElementById("clearPref");
+    const autoNotice = document.getElementById("autoNotice");
+    const autoNoticeText = document.getElementById("autoNoticeText");
+    const cancelAuto = document.getElementById("cancelAuto");
 
-    const savedUrl = localStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(PREF_KEY);
     const skipAuto = new URLSearchParams(window.location.search).get("picker") === "1";
-    let autoTimer = null;
+    let timer = null;
 
-    if (savedUrl) {
-      rememberCheck.checked = true;
-      resetPrefBtn.style.display = "inline";
+    if (saved) {
+      rememberPref.checked = true;
+      clearPref.style.display = "inline";
 
       if (!skipAuto) {
-        const label = savedUrl.includes("moodle") ? "Moodle" : "ePerso";
-        let seconds = 2;
-        autoBanner.classList.add("visible");
-        autoBannerText.textContent = `Ouverture automatique de ${label} dans ${seconds}s...`;
+        const targetName = saved.includes("moodle") ? "Moodle" : "ePerso";
+        let left = 2;
+        autoNotice.classList.add("active");
+        autoNoticeText.textContent = `Ouverture de ${targetName} dans ${left}s…`;
 
-        autoTimer = setInterval(() => {
-          seconds -= 1;
-          if (seconds <= 0) {
-            clearInterval(autoTimer);
-            window.location.href = savedUrl;
+        timer = setInterval(() => {
+          left -= 1;
+          if (left <= 0) {
+            clearInterval(timer);
+            window.location.href = saved;
           } else {
-            autoBannerText.textContent = `Ouverture automatique de ${label} dans ${seconds}s...`;
+            autoNoticeText.textContent = `Ouverture de ${targetName} dans ${left}s…`;
           }
         }, 1000);
       }
     }
 
-    cancelAutoBtn.addEventListener("click", () => {
-      if (autoTimer) clearInterval(autoTimer);
-      autoBanner.classList.remove("visible");
+    cancelAuto.addEventListener("click", () => {
+      if (timer) clearInterval(timer);
+      autoNotice.classList.remove("active");
     });
 
-    function openPortal(url) {
-      if (autoTimer) clearInterval(autoTimer);
-      if (rememberCheck.checked) {
-        localStorage.setItem(STORAGE_KEY, url);
+    function navigateTo(url) {
+      if (timer) clearInterval(timer);
+      if (rememberPref.checked) {
+        localStorage.setItem(PREF_KEY, url);
       } else {
-        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(PREF_KEY);
       }
       window.location.href = url;
     }
 
-    document.getElementById("btnEperso").addEventListener("click", () => openPortal(URL_EPERSO));
-    document.getElementById("btnMoodle").addEventListener("click", () => openPortal(URL_MOODLE));
+    document.getElementById("goEperso").addEventListener("click", () => navigateTo(URL_EPERSO));
+    document.getElementById("goMoodle").addEventListener("click", () => navigateTo(URL_MOODLE));
 
-    resetPrefBtn.addEventListener("click", () => {
-      if (autoTimer) clearInterval(autoTimer);
-      localStorage.removeItem(STORAGE_KEY);
-      rememberCheck.checked = false;
-      resetPrefBtn.style.display = "none";
-      autoBanner.classList.remove("visible");
+    clearPref.addEventListener("click", () => {
+      if (timer) clearInterval(timer);
+      localStorage.removeItem(PREF_KEY);
+      rememberPref.checked = false;
+      clearPref.style.display = "none";
+      autoNotice.classList.remove("active");
     });
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "1") openPortal(URL_EPERSO);
-      if (e.key === "2") openPortal(URL_MOODLE);
+      if (e.key === "1") navigateTo(URL_EPERSO);
+      if (e.key === "2") navigateTo(URL_MOODLE);
     });
   </script>
 </body>
