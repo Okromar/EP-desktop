@@ -424,11 +424,25 @@
         setTimeout(() => banner.remove(), 9000);
       }
 
+      async function triggerSystemNotification(title, body) {
+        if (!("Notification" in window)) return;
+        try {
+          if (Notification.permission === "default") {
+            await Notification.requestPermission();
+          }
+          if (Notification.permission === "granted") {
+            new Notification(title, { body });
+          }
+        } catch (_) {}
+      }
+
       function sendCourseNotification(title, startTimeStr, room, minutesLeft, isTest) {
         const bodyParts = [`Début à ${startTimeStr} (dans ${minutesLeft} min)`];
         if (room) bodyParts.push(`Local : ${room}`);
         const body = bodyParts.join(" • ");
+        const notifTitle = (isTest ? "[TEST] " : "") + title;
 
+        triggerSystemNotification(notifTitle, body);
         showInAppToast(title, body, Boolean(isTest));
       }
 
@@ -449,7 +463,7 @@
             <option value="15">15 min avant</option>
             <option value="30">30 min avant</option>
           </select>
-          <button type="button" id="epTestNotifBtn" title="Simuler un rappel de cours">
+          <button type="button" id="epTestNotifBtn" title="Tester une notification">
             Tester notif
           </button>
         `;
