@@ -43,6 +43,10 @@ pub fn run() {
                     let _ = window.set_title("EPHEC Desktop");
                 }
             })
+            .initialization_script(&format!(
+                "window.__EPHEC_CUSTOM_CSS__ = {:?};",
+                include_str!("../custom-styles.css")
+            ))
             .initialization_script(include_str!("../custom-ui.js"))
             .initialization_script(include_str!("../custom-notes.js"))
             .initialization_script(include_str!("../custom-settings.js"))
