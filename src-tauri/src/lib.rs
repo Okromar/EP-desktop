@@ -21,7 +21,8 @@ pub fn run() {
             .center()
             .on_navigation(move |url| {
                 let host = url.host_str().unwrap_or("");
-                let allowed = host.ends_with("ephec.be")
+                let allowed = host == "tauri.localhost"
+                    || host.ends_with("ephec.be")
                     || host.ends_with("microsoft.com")
                     || host.ends_with("microsoftonline.com")
                     || host.ends_with("msauth.net")
