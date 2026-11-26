@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EPHEC — Choisir un espace</title>
+  <title>EPHEC Desktop</title>
   <style>
     * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-family: "Segoe UI", system-ui, sans-serif;
       background: #0f172a;
       color: #f8fafc;
       display: flex;
@@ -17,103 +17,39 @@
       justify-content: center;
       padding: 24px;
     }
-    .card {
+    .box {
       width: 100%;
-      max-width: 520px;
+      max-width: 480px;
       background: #1e293b;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 18px;
-      padding: 32px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 28px;
       text-align: center;
     }
-    h1 { margin: 0 0 8px 0; font-size: 1.5rem; font-weight: 700; }
-    p { margin: 0 0 24px 0; color: #94a3b8; font-size: 0.92rem; }
-    .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
-    .choice-btn {
+    h1 { margin: 0 0 8px 0; font-size: 1.4rem; }
+    p { margin: 0 0 22px 0; color: #94a3b8; font-size: 0.9rem; }
+    .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    button {
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid #475569;
       background: #0f172a;
       color: #f8fafc;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 14px;
-      padding: 20px 16px;
+      font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.15s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      font-family: inherit;
     }
-    .choice-btn:hover { border-color: #3b82f6; background: #172554; transform: translateY(-2px); }
-    .choice-title { font-size: 1.05rem; font-weight: 700; }
-    .choice-sub { font-size: 0.78rem; color: #94a3b8; }
-    .remember-row {
-      display: flex; align-items: center; justify-content: center;
-      gap: 8px; font-size: 0.84rem; color: #cbd5e1; cursor: pointer; user-select: none;
-    }
-    .reset-link {
-      margin-top: 14px; display: inline-block; background: none; border: none;
-      color: #60a5fa; font-size: 0.8rem; cursor: pointer; text-decoration: underline; font-family: inherit;
-    }
+    button:hover { background: #2563eb; border-color: #2563eb; }
   </style>
 </head>
 <body>
-  <div class="card">
+  <div class="box">
     <h1>EPHEC Desktop</h1>
-    <p>Que veux-tu ouvrir au démarrage ?</p>
-
-    <div class="choices">
-      <button type="button" class="choice-btn" id="openEperso">
-        <span class="choice-title">ePerso</span>
-        <span class="choice-sub">Horaires, résultats, locaux</span>
-      </button>
-      <button type="button" class="choice-btn" id="openMoodle">
-        <span class="choice-title">Moodle</span>
-        <span class="choice-sub">Cours, devoirs, ressources</span>
-      </button>
+    <p>Choisis l'espace à ouvrir :</p>
+    <div class="btns">
+      <button type="button" onclick="location.href='https://eperso.ephec.be/'">ePerso</button>
+      <button type="button" onclick="location.href='https://moodle.ephec.be/my/index.php'">Moodle</button>
     </div>
-
-    <label class="remember-row">
-      <input type="checkbox" id="rememberChoice" />
-      <span>Ouvrir automatiquement ce choix la prochaine fois</span>
-    </label>
-
-    <button type="button" class="reset-link" id="clearSaved" style="display:none;">
-      Réinitialiser le choix automatique
-    </button>
   </div>
-
-  <script>
-    const URL_EPERSO = "https://eperso.ephec.be/";
-    const URL_MOODLE = "https://moodle.ephec.be/my/index.php";
-
-    const rememberCheckbox = document.getElementById("rememberChoice");
-    const resetBtn = document.getElementById("clearSaved");
-    const savedUrl = localStorage.getItem("ephec_startup_url");
-    const skipPicker = new URLSearchParams(window.location.search).get("picker") === "1";
-
-    if (savedUrl && !skipPicker) {
-      window.location.replace(savedUrl);
-    } else if (savedUrl) {
-      resetBtn.style.display = "inline-block";
-    }
-
-    function launch(targetUrl) {
-      if (rememberCheckbox.checked) {
-        localStorage.setItem("ephec_startup_url", targetUrl);
-      } else {
-        localStorage.removeItem("ephec_startup_url");
-      }
-      window.location.replace(targetUrl);
-    }
-
-    document.getElementById("openEperso").addEventListener("click", () => launch(URL_EPERSO));
-    document.getElementById("openMoodle").addEventListener("click", () => launch(URL_MOODLE));
-    resetBtn.addEventListener("click", () => {
-      localStorage.removeItem("ephec_startup_url");
-      resetBtn.style.display = "none";
-      rememberCheckbox.checked = false;
-    });
-  </script>
 </body>
 </html>
