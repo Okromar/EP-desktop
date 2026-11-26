@@ -428,17 +428,8 @@
         const bodyParts = [`Début à ${startTimeStr} (dans ${minutesLeft} min)`];
         if (room) bodyParts.push(`Local : ${room}`);
         const body = bodyParts.join(" • ");
-        const notifTitle = (isTest ? "[TEST] " : "") + title;
 
-        const oldTitle = document.title;
-        document.title = `EPHEC_NOTIF|${notifTitle}|${body}`;
-        setTimeout(() => {
-          document.title = oldTitle;
-        }, 500);
-
-        if (isTest) {
-          showInAppToast(title, body, true);
-        }
+        showInAppToast(title, body, Boolean(isTest));
       }
 
       const weekSelector = document.getElementById("weekSelector");
@@ -458,7 +449,7 @@
             <option value="15">15 min avant</option>
             <option value="30">30 min avant</option>
           </select>
-          <button type="button" id="epTestNotifBtn" title="Simuler une notification Windows maintenant">
+          <button type="button" id="epTestNotifBtn" title="Simuler un rappel de cours">
             Tester notif
           </button>
         `;
