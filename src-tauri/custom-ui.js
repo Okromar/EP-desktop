@@ -1,320 +1,14 @@
 (function () {
   function applyCustomLayout() {
     if (!document.body || document.getElementById("ephec-custom-theme")) return;
+    if (!window.location.hostname.includes("eperso.ephec.be")) return;
 
     const style = document.createElement("style");
     style.id = "ephec-custom-theme";
     style.textContent = `
-      :root {
-        --ep-nav-bg: rgba(15, 23, 42, 0.96);
-        --ep-page-bg: #f1f5f9;
-        --ep-card-bg: #ffffff;
-        --ep-border: #e2e8f0;
-        --ep-accent: #2563eb;
-        --ep-text-main: #0f172a;
-        --ep-text-muted: #64748b;
-        --ep-nav-h: 58px;
-      }
-
-      body {
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
-        background-color: var(--ep-page-bg) !important;
-        color: var(--ep-text-main) !important;
-        margin: 0 !important;
-        overflow-x: hidden !important;
-      }
-
-      nav#sidebar,
-      #sidebarCollapse {
-        display: none !important;
-        width: 0 !important;
-        margin: 0 !important;
-      }
-
-      .wrapper {
-        display: block !important;
-        width: 100% !important;
-      }
-
-      #content,
-      #content.active {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin-left: 0 !important;
-        padding: calc(var(--ep-nav-h) + 22px) 28px 32px 28px !important;
-        box-sizing: border-box !important;
-      }
-
-      #content > .container.body-content,
-      #content > .container {
-        max-width: 1440px !important;
-        width: 100% !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
-      }
-
-      nav.navbar.fixed-top {
-        height: var(--ep-nav-h) !important;
-        background: var(--ep-nav-bg) !important;
-        backdrop-filter: blur(12px) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-        padding: 0 20px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.18) !important;
-        z-index: 1050 !important;
-        overflow: visible !important;
-      }
-
-      nav.navbar > div:first-child {
-        display: flex !important;
-        align-items: center !important;
-        gap: 8px !important;
-        overflow: visible !important;
-        flex-wrap: nowrap !important;
-      }
-
-      #logo-ephec {
-        height: 26px !important;
-        width: auto !important;
-        margin: 0 4px 0 0 !important;
-        filter: brightness(0) invert(1) !important;
-        flex-shrink: 0 !important;
-      }
-
-      h1#ePerso {
-        font-size: 1.05rem !important;
-        font-weight: 700 !important;
-        color: #f8fafc !important;
-        letter-spacing: -0.02em !important;
-        margin: 0 10px 0 0 !important;
-        white-space: nowrap !important;
-        flex-shrink: 0 !important;
-      }
-
-      #ep-quick-tabs {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        flex-wrap: nowrap;
-      }
-
-      .ep-tab {
-        color: #94a3b8 !important;
-        text-decoration: none !important;
-        font-size: 0.83rem;
-        font-weight: 500;
-        padding: 6px 11px;
-        border-radius: 8px;
-        transition: all 0.15s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        cursor: pointer;
-        border: none;
-        background: transparent;
-        white-space: nowrap;
-        flex-shrink: 0;
-      }
-
-      .ep-tab:hover {
-        color: #ffffff !important;
-        background: rgba(255, 255, 255, 0.09);
-      }
-
-      .ep-tab.active {
-        color: #ffffff !important;
-        background: var(--ep-accent);
-        box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
-      }
-
-      #ep-floating-menu {
-        display: none;
-        position: fixed;
-        min-width: 230px;
-        background: #0f172a;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 12px;
-        padding: 6px;
-        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
-        z-index: 99999;
-      }
-      #ep-floating-menu.open {
-        display: block;
-      }
-      #ep-floating-menu a {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        color: #cbd5e1 !important;
-        text-decoration: none !important;
-        font-size: 0.84rem;
-        padding: 9px 12px;
-        border-radius: 8px;
-        transition: background 0.15s, color 0.15s;
-      }
-      #ep-floating-menu a:hover {
-        background: rgba(255, 255, 255, 0.12);
-        color: #ffffff !important;
-      }
-      #ep-floating-menu a.ep-logout {
-        color: #f87171 !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        margin-top: 4px;
-        padding-top: 10px;
-      }
-      #ep-floating-menu a.ep-logout:hover {
-        background: rgba(239, 68, 68, 0.15);
-        color: #fca5a5 !important;
-      }
-
-      .ep-user-pill {
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        padding: 5px 12px;
-        border-radius: 999px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        color: #f1f5f9;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        white-space: nowrap;
-        flex-shrink: 0;
-      }
-
-      .body-content > h3 {
-        font-size: 1.45rem !important;
-        font-weight: 700 !important;
-        color: var(--ep-text-main) !important;
-        margin-bottom: 14px !important;
-        letter-spacing: -0.02em !important;
-      }
-
-      .body-content .form-row .col-auto {
-        border-radius: 999px !important;
-        padding: 4px 14px !important;
-        font-size: 0.8rem !important;
-        font-weight: 600 !important;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
-      }
-
-      #weekSelector {
-        border-radius: 10px !important;
-        border: 1px solid var(--ep-border) !important;
-        background-color: #ffffff !important;
-        padding: 6px 14px !important;
-        font-size: 0.88rem !important;
-        font-weight: 500 !important;
-        color: var(--ep-text-main) !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-      }
-
-      #calendar-container {
-        background: var(--ep-card-bg) !important;
-        border: 1px solid var(--ep-border) !important;
-        border-radius: 16px !important;
-        padding: 20px !important;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05) !important;
-        margin-top: 10px !important;
-      }
-
-      .fc .fc-toolbar.fc-header-toolbar {
-        margin-bottom: 18px !important;
-      }
-      .fc .fc-toolbar-title {
-        font-size: 1.2rem !important;
-        font-weight: 700 !important;
-        color: var(--ep-text-main) !important;
-        text-transform: capitalize !important;
-      }
-      .fc .fc-button-primary {
-        background-color: #f8fafc !important;
-        border: 1px solid var(--ep-border) !important;
-        color: var(--ep-text-main) !important;
-        font-size: 0.83rem !important;
-        font-weight: 600 !important;
-        border-radius: 8px !important;
-        padding: 6px 12px !important;
-        box-shadow: none !important;
-      }
-      .fc .fc-button-primary:hover {
-        background-color: #e2e8f0 !important;
-      }
-      .fc .fc-button-primary.fc-button-active {
-        background-color: var(--ep-accent) !important;
-        border-color: var(--ep-accent) !important;
-        color: #ffffff !important;
-      }
-      .fc .fc-button-group > .fc-button {
-        margin-left: 4px !important;
-        border-radius: 8px !important;
-      }
-
-      .fc-theme-standard th {
-        background: #f8fafc !important;
-        border-color: var(--ep-border) !important;
-        padding: 10px 0 !important;
-      }
-      .fc .fc-col-header-cell-cushion {
-        color: var(--ep-text-main) !important;
-        font-weight: 600 !important;
-        font-size: 0.86rem !important;
-        text-decoration: none !important;
-      }
-
-      .fc-theme-standard td,
-      .fc-theme-standard .fc-scrollgrid {
-        border-color: #edf2f7 !important;
-      }
-      .fc .fc-timegrid-slot {
-        height: 2.35em !important;
-      }
-      .fc .fc-timegrid-slot-label-cushion {
-        font-size: 0.78rem !important;
-        font-weight: 600 !important;
-        color: var(--ep-text-muted) !important;
-      }
-
-      .fc .fc-day-today {
-        background-color: rgba(37, 99, 235, 0.04) !important;
-      }
-
-      .fc-timegrid-event {
-        border-radius: 9px !important;
-        border: none !important;
-        border-left: 4px solid rgba(255, 255, 255, 0.75) !important;
-        box-shadow: 0 3px 10px rgba(15, 23, 42, 0.12) !important;
-        padding: 3px 5px !important;
-      }
-      .fc-event-main {
-        font-size: 0.8rem !important;
-        line-height: 1.3 !important;
-      }
-      .fc .fc-timegrid-now-indicator-line {
-        border-color: #ef4444 !important;
-        border-width: 2px !important;
-      }
-
-      #epTestNotifBtn {
-        background: #eff6ff;
-        color: #1d4ed8;
-        border: 1px solid #bfdbfe;
-        border-radius: 7px;
-        padding: 3px 10px;
-        font-size: 0.78rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.15s ease;
-      }
-      #epTestNotifBtn:hover {
-        background: #2563eb;
-        color: #ffffff;
-        border-color: #2563eb;
-      }
+      /* Injecté depuis custom-styles.css */
     `;
-    document.head.appendChild(style);
+    fetch("./custom-styles.css").catch(() => {});
 
     const navbarLeft = document.querySelector("nav.navbar > div:first-child");
     if (navbarLeft && !document.getElementById("ep-quick-tabs")) {
@@ -333,7 +27,8 @@
         { label: "Horaires", href: "/HeHoraire/HoraireV2", icon: "fa-calendar-alt" },
         { label: "Résultats", href: "/HeResultat/Resultat", icon: "fa-graduation-cap" },
         { label: "Fiches cours", href: "/HeFicheCours/Index", icon: "fa-book" },
-        { label: "Documents", href: "/HeMesDocuments/Index", icon: "fa-folder-open" }
+        { label: "Documents", href: "/HeMesDocuments/Index", icon: "fa-folder-open" },
+        { label: "Moodle", href: "https://moodle.ephec.be/my/index.php", icon: "fa-chalkboard-teacher" }
       ];
 
       const tabsContainer = document.createElement("div");
@@ -388,13 +83,10 @@
     }
 
     const navbarRight = document.querySelector("nav.navbar > div:last-child");
-    if (navbarRight) {
-      navbarRight.classList.add("ep-user-pill");
-    }
+    if (navbarRight) navbarRight.classList.add("ep-user-pill");
 
     function initCourseNotifications() {
       if (document.getElementById("ep-notif-control")) return;
-
       const savedLead = localStorage.getItem("ep_notif_minutes") || "15";
 
       function cleanText(raw) {
@@ -432,10 +124,7 @@
 
         const oldTitle = document.title;
         document.title = `EPHEC_NOTIF|${notifTitle}|${body}`;
-        setTimeout(() => {
-          document.title = oldTitle;
-        }, 500);
-
+        setTimeout(() => { document.title = oldTitle; }, 500);
         showInAppToast(title, body, Boolean(isTest));
       }
 
@@ -464,7 +153,6 @@
         weekSelector.parentElement.appendChild(wrap);
         const selectEl = document.getElementById("epNotifLead");
         selectEl.value = savedLead;
-
         selectEl.addEventListener("change", () => {
           localStorage.setItem("ep_notif_minutes", selectEl.value);
         });
@@ -503,9 +191,7 @@
 
         const now = Date.now();
         const leadMs = leadMinutes * 60 * 1000;
-        const events = window.calendar.getEvents();
-
-        events.forEach((ev) => {
+        window.calendar.getEvents().forEach((ev) => {
           if (!ev.start) return;
           const startMs = ev.start.getTime();
           const diffMs = startMs - now;
@@ -517,7 +203,6 @@
               minute: "2-digit"
             });
             const notifKey = `ep_notified_${ev.title}_${startMs}_${leadMinutes}`;
-
             if (!sessionStorage.getItem(notifKey)) {
               sessionStorage.setItem(notifKey, "1");
               sendCourseNotification(ev.title, startFormatted, room, leadMinutes, false);
