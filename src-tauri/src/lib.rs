@@ -3,6 +3,7 @@ use std::thread;
 use tauri::{WebviewUrl, WebviewWindowBuilder};
 use tauri_plugin_opener::OpenerExt;
 use windows_sys::Win32::Foundation::HWND;
+use windows_sys::Win32::System::LibraryLoader::GetModuleHandleW;
 use windows_sys::Win32::UI::Shell::{
     Shell_NotifyIconW, NIF_ICON, NIF_INFO, NIF_MESSAGE, NIM_ADD, NIM_DELETE, NOTIFYICONDATAW,
     NIIF_INFO,
@@ -25,7 +26,7 @@ fn show_native_windows_balloon(title: String, body: String) {
     let _ = thread::spawn(move || {
         let _ = panic::catch_unwind(|| unsafe {
             let class_name: Vec<u16> = "EphecNotifDummyClass\0".encode_utf16().collect();
-            let hinstance = windows_sys::Win32::System::LibraryLoader::GetModuleHandleW(std::ptr::null());
+            let hinstance = GetModuleHandleW(std::ptr::null());
 
             let wc = WNDCLASSW {
                 style: 0,
