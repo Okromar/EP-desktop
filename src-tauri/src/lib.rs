@@ -43,6 +43,8 @@ pub fn run() {
                 }
             })
             .initialization_script(include_str!("../custom-ui.js"))
+            .initialization_script(include_str!("../custom-notes.js"))
+            .initialization_script(include_str!("../custom-settings.js"))
             .build()?;
 
             Ok(())
