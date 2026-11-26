@@ -398,27 +398,17 @@
         setTimeout(() => banner.remove(), 9000);
       }
 
-      async function sendCourseNotification(title, startTimeStr, room, minutesLeft, isTest) {
+      function sendCourseNotification(title, startTimeStr, room, minutesLeft, isTest) {
         const bodyParts = [`Début à ${startTimeStr} (dans ${minutesLeft} min)`];
         if (room) bodyParts.push(`Local : ${room}`);
         const body = bodyParts.join(" • ");
         const notifTitle = (isTest ? "[TEST] " : "") + title;
 
-        try {
-          if (window.__TAURI__ && window.__TAURI__.notification) {
-            const { isPermissionGranted, requestPermission, sendNotification } = window.__TAURI__.notification;
-            let granted = await isPermissionGranted();
-            if (!granted) {
-              const permission = await requestPermission();
-              granted = permission === "granted";
-            }
-            if (granted) {
-              sendNotification({ title: notifTitle, body: body });
-            }
-          }
-        } catch (err) {
-          console.error("Erreur notification Tauri:", err);
-        }
+        const oldTitle = document.title;
+        document.title = `EPHEC_NOTIF|${notifTitle}|${body}`;
+        setTimeout(() => {
+          document.title = oldTitle;
+        }, 500);
 
         if (isTest) {
           showInAppToast(title, body, true);
