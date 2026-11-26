@@ -5,10 +5,8 @@
 
     const style = document.createElement("style");
     style.id = "ephec-custom-theme";
-    style.textContent = `
-      /* Injecté depuis custom-styles.css */
-    `;
-    fetch("./custom-styles.css").catch(() => {});
+    style.textContent = window.__EPHEC_CUSTOM_CSS__ || "";
+    document.head.appendChild(style);
 
     const navbarLeft = document.querySelector("nav.navbar > div:first-child");
     if (navbarLeft && !document.getElementById("ep-quick-tabs")) {
