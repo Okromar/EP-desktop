@@ -58,55 +58,64 @@
         background: var(--ep-nav-bg) !important;
         backdrop-filter: blur(12px) !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-        padding: 0 24px !important;
+        padding: 0 20px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
         box-shadow: 0 4px 20px rgba(15, 23, 42, 0.18) !important;
         z-index: 1050 !important;
+        overflow: visible !important;
       }
 
       nav.navbar > div:first-child {
         display: flex !important;
         align-items: center !important;
-        gap: 10px !important;
+        gap: 8px !important;
+        overflow: visible !important;
+        flex-wrap: nowrap !important;
       }
 
       #logo-ephec {
-        height: 28px !important;
+        height: 26px !important;
         width: auto !important;
         margin: 0 4px 0 0 !important;
         filter: brightness(0) invert(1) !important;
+        flex-shrink: 0 !important;
       }
 
       h1#ePerso {
-        font-size: 1.1rem !important;
+        font-size: 1.05rem !important;
         font-weight: 700 !important;
         color: #f8fafc !important;
         letter-spacing: -0.02em !important;
-        margin-right: 16px !important;
+        margin: 0 10px 0 0 !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
       }
 
       #ep-quick-tabs {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
+        flex-wrap: nowrap;
       }
 
       .ep-tab {
         color: #94a3b8 !important;
         text-decoration: none !important;
-        font-size: 0.85rem;
+        font-size: 0.83rem;
         font-weight: 500;
-        padding: 7px 13px;
+        padding: 6px 11px;
         border-radius: 8px;
         transition: all 0.15s ease;
         display: inline-flex;
         align-items: center;
-        gap: 7px;
+        gap: 6px;
         cursor: pointer;
         border: none;
         background: transparent;
+        white-space: nowrap;
+        flex-shrink: 0;
       }
 
       .ep-tab:hover {
@@ -120,56 +129,59 @@
         box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
       }
 
-      .ep-dropdown {
-        position: relative;
-      }
-      .ep-dropdown-menu {
+      #ep-floating-menu {
         display: none;
-        position: absolute;
-        top: calc(100% + 8px);
-        left: 0;
-        min-width: 220px;
+        position: fixed;
+        min-width: 230px;
         background: #0f172a;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
         padding: 6px;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-        z-index: 2000;
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+        z-index: 99999;
       }
-      .ep-dropdown.open .ep-dropdown-menu {
+      #ep-floating-menu.open {
         display: block;
       }
-      .ep-dropdown-menu a {
-        display: block;
+      #ep-floating-menu a {
+        display: flex;
+        align-items: center;
+        gap: 9px;
         color: #cbd5e1 !important;
         text-decoration: none !important;
-        font-size: 0.83rem;
-        padding: 8px 12px;
-        border-radius: 7px;
-        transition: background 0.15s;
+        font-size: 0.84rem;
+        padding: 9px 12px;
+        border-radius: 8px;
+        transition: background 0.15s, color 0.15s;
       }
-      .ep-dropdown-menu a:hover {
-        background: rgba(255, 255, 255, 0.1);
-        color: #fff !important;
+      #ep-floating-menu a:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #ffffff !important;
       }
-      .ep-dropdown-menu a.ep-logout {
+      #ep-floating-menu a.ep-logout {
         color: #f87171 !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
         margin-top: 4px;
-        padding-top: 9px;
+        padding-top: 10px;
+      }
+      #ep-floating-menu a.ep-logout:hover {
+        background: rgba(239, 68, 68, 0.15);
+        color: #fca5a5 !important;
       }
 
       .ep-user-pill {
         background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.12);
-        padding: 6px 14px;
+        padding: 5px 12px;
         border-radius: 999px;
-        font-size: 0.82rem;
+        font-size: 0.8rem;
         font-weight: 500;
         color: #f1f5f9;
         display: flex;
         align-items: center;
         gap: 8px;
+        white-space: nowrap;
+        flex-shrink: 0;
       }
 
       .body-content > h3 {
@@ -335,30 +347,44 @@
         tabsContainer.appendChild(a);
       });
 
-      const moreWrap = document.createElement("div");
-      moreWrap.className = "ep-dropdown";
-      moreWrap.innerHTML = `
-        <button type="button" class="ep-tab">
-          <i class="fas fa-th-large"></i><span>Plus</span><i class="fas fa-chevron-down" style="font-size:0.7rem;"></i>
-        </button>
-        <div class="ep-dropdown-menu">
-          <a href="/HeOccupationLocaux/OccupationLocaux">Occupation des locaux</a>
-          <a href="/HeJustificatifsAbsence/MesDemandes">Justificatifs d'absence</a>
-          <a href="/HeInscriptionEnCours/Inscription">Inscription / PAE</a>
-          <a href="/HeEtudiant/Detail">Données personnelles</a>
-          <a href="https://portail.ephec.be/" target="_blank">Portail applications EPHEC</a>
-          <a href="/Account/SignOut" class="ep-logout">Se déconnecter</a>
-        </div>
+      const moreBtn = document.createElement("button");
+      moreBtn.type = "button";
+      moreBtn.id = "ep-more-btn";
+      moreBtn.className = "ep-tab";
+      moreBtn.innerHTML = `<i class="fas fa-th-large"></i><span>Plus</span><i class="fas fa-chevron-down" style="font-size:0.7rem;"></i>`;
+      tabsContainer.appendChild(moreBtn);
+      navbarLeft.appendChild(tabsContainer);
+
+      const floatingMenu = document.createElement("div");
+      floatingMenu.id = "ep-floating-menu";
+      floatingMenu.innerHTML = `
+        <a href="/HeOccupationLocaux/OccupationLocaux"><i class="fas fa-door-open" style="width:16px;"></i><span>Occupation des locaux</span></a>
+        <a href="/HeJustificatifsAbsence/MesDemandes"><i class="fas fa-file-medical" style="width:16px;"></i><span>Justificatifs d'absence</span></a>
+        <a href="/HeInscriptionEnCours/Inscription"><i class="fas fa-user-check" style="width:16px;"></i><span>Inscription / PAE</span></a>
+        <a href="/HeEtudiant/Detail"><i class="fas fa-id-card" style="width:16px;"></i><span>Données personnelles</span></a>
+        <a href="https://portail.ephec.be/" target="_blank"><i class="fas fa-external-link-alt" style="width:16px;"></i><span>Portail applications EPHEC</span></a>
+        <a href="/Account/SignOut" class="ep-logout"><i class="fas fa-sign-out-alt" style="width:16px;"></i><span>Se déconnecter</span></a>
       `;
-      const moreBtn = moreWrap.querySelector("button");
+      document.body.appendChild(floatingMenu);
+
       moreBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-        moreWrap.classList.toggle("open");
+        const isOpen = floatingMenu.classList.contains("open");
+        if (isOpen) {
+          floatingMenu.classList.remove("open");
+          return;
+        }
+        const rect = moreBtn.getBoundingClientRect();
+        floatingMenu.style.top = `${rect.bottom + 8}px`;
+        floatingMenu.style.left = `${Math.min(rect.left, window.innerWidth - 250)}px`;
+        floatingMenu.classList.add("open");
       });
-      document.addEventListener("click", () => moreWrap.classList.remove("open"));
 
-      tabsContainer.appendChild(moreWrap);
-      navbarLeft.appendChild(tabsContainer);
+      document.addEventListener("click", (e) => {
+        if (!floatingMenu.contains(e.target) && e.target !== moreBtn) {
+          floatingMenu.classList.remove("open");
+        }
+      });
     }
 
     const navbarRight = document.querySelector("nav.navbar > div:last-child");
