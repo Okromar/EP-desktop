@@ -3,9 +3,11 @@
   "identifier": "default",
   "description": "Capability for the main window",
   "windows": ["main"],
+  "remote": {
+    "urls": ["https://eperso.ephec.be/*"]
+  },
   "permissions": [
     "core:default",
-    "opener:default",
-    "notification:default"
+    "opener:default"
   ]
 }
