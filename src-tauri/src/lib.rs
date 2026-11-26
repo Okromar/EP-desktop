@@ -7,6 +7,7 @@ use tauri_plugin_opener::OpenerExt;
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_notification::init())
         .setup(|app| {
             let show_i = MenuItem::with_id(app, "show", "Ouvrir ePerso", true, None::<&str>)?;
             let quit_i = MenuItem::with_id(app, "quit", "Quitter complètement", true, None::<&str>)?;
