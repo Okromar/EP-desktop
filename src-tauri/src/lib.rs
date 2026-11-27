@@ -23,6 +23,8 @@ pub fn run() {
                 let host = url.host_str().unwrap_or("");
                 let allowed = host == "tauri.localhost"
                     || host.ends_with("ephec.be")
+                    || host.ends_with("office.com")
+                    || host.ends_with("office365.com")
                     || host.ends_with("microsoft.com")
                     || host.ends_with("microsoftonline.com")
                     || host.ends_with("msauth.net")
