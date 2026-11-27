@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EPHEC — Espace</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
@@ -23,10 +19,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    .page {
-      width: 100%;
-      max-width: 680px;
-    }
+    .page { width: 100%; max-width: 860px; }
 
     .topbar {
       display: flex;
@@ -37,26 +30,10 @@
       margin-bottom: 36px;
     }
 
-    .title-group h1 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: #161616;
-    }
+    .title-group h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.03em; }
+    .title-group p { font-size: 0.85rem; color: #666662; margin-top: 4px; }
 
-    .title-group p {
-      font-size: 0.85rem;
-      color: #666662;
-      margin-top: 4px;
-    }
-
-    .meta-right {
-      text-align: right;
-      font-size: 0.78rem;
-      color: #666662;
-      font-variant-numeric: tabular-nums;
-    }
-
+    .meta-right { text-align: right; font-size: 0.78rem; color: #666662; font-variant-numeric: tabular-nums; }
     .ascii-mark {
       font-family: ui-monospace, "Cascadia Code", "Consolas", monospace;
       font-size: 0.72rem;
@@ -76,11 +53,7 @@
       margin-bottom: 24px;
       font-size: 0.82rem;
     }
-
-    .auto-notice.active {
-      display: flex;
-    }
-
+    .auto-notice.active { display: flex; }
     .auto-notice button {
       background: none;
       border: 1px solid #161616;
@@ -90,15 +63,11 @@
       cursor: pointer;
       font-family: inherit;
     }
-
-    .auto-notice button:hover {
-      background: #161616;
-      color: #f7f7f5;
-    }
+    .auto-notice button:hover { background: #161616; color: #f7f7f5; }
 
     .choices {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
       margin-bottom: 32px;
     }
@@ -106,7 +75,7 @@
     .choice {
       background: #ffffff;
       border: 1px solid #e2e2dd;
-      padding: 24px;
+      padding: 22px;
       text-align: left;
       cursor: pointer;
       color: #161616;
@@ -114,47 +83,25 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 164px;
+      min-height: 168px;
       transition: border-color 0.14s ease, transform 0.14s ease;
     }
-
-    .choice:hover {
-      border-color: #161616;
-      transform: translateY(-2px);
-    }
+    .choice:hover { border-color: #161616; transform: translateY(-2px); }
 
     .choice-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
-
     .choice-index {
       font-family: ui-monospace, "Cascadia Code", "Consolas", monospace;
       font-size: 0.75rem;
       color: #777772;
     }
-
-    .choice-name {
-      font-size: 1.2rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
-    }
-
-    .choice-desc {
-      font-size: 0.83rem;
-      color: #666662;
-      line-height: 1.45;
-    }
-
-    .choice-arrow {
-      margin-top: 20px;
-      font-size: 0.8rem;
-      color: #161616;
-      font-weight: 500;
-    }
+    .choice-name { font-size: 1.18rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+    .choice-desc { font-size: 0.82rem; color: #666662; line-height: 1.45; }
+    .choice-arrow { margin-top: 18px; font-size: 0.8rem; font-weight: 500; }
 
     .shortcuts-label {
       font-size: 0.72rem;
@@ -164,13 +111,7 @@
       margin-bottom: 10px;
     }
 
-    .shortcuts {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 32px;
-    }
-
+    .shortcuts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
     .shortcut {
       background: #ffffff;
       border: 1px solid #e2e2dd;
@@ -180,11 +121,7 @@
       text-decoration: none;
       transition: border-color 0.14s ease, background-color 0.14s ease;
     }
-
-    .shortcut:hover {
-      border-color: #161616;
-      background-color: #efefec;
-    }
+    .shortcut:hover { border-color: #161616; background-color: #efefec; }
 
     .bottom-bar {
       padding-top: 16px;
@@ -196,19 +133,8 @@
       color: #666662;
     }
 
-    .remember {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      user-select: none;
-      color: #161616;
-    }
-
-    .remember input {
-      accent-color: #161616;
-      cursor: pointer;
-    }
+    .remember { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; color: #161616; }
+    .remember input { accent-color: #161616; cursor: pointer; }
 
     .reset-btn {
       background: none;
@@ -219,12 +145,9 @@
       cursor: pointer;
       font-family: inherit;
     }
+    .reset-btn:hover { color: #161616; }
 
-    .reset-btn:hover {
-      color: #161616;
-    }
-
-    @media (max-width: 580px) {
+    @media (max-width: 720px) {
       .choices { grid-template-columns: 1fr; }
       .topbar { flex-direction: column; gap: 10px; }
       .meta-right { text-align: left; }
@@ -273,6 +196,18 @@
         </div>
         <div class="choice-arrow">Ouvrir →</div>
       </button>
+
+      <button type="button" class="choice" id="goOutlook">
+        <div>
+          <div class="choice-head">
+            <span class="choice-index">03</span>
+            <span class="choice-index">[3]</span>
+          </div>
+          <div class="choice-name">Outlook</div>
+          <div class="choice-desc">Boîte mail étudiante EPHEC, messages et agenda Office 365.</div>
+        </div>
+        <div class="choice-arrow">Ouvrir →</div>
+      </button>
     </section>
 
     <div class="shortcuts-label">Accès direct</div>
@@ -281,6 +216,7 @@
       <a class="shortcut" href="https://eperso.ephec.be/HeResultat/Resultat">Résultats</a>
       <a class="shortcut" href="https://eperso.ephec.be/HeOccupationLocaux/OccupationLocaux">Locaux libres</a>
       <a class="shortcut" href="https://moodle.ephec.be/my/courses.php">Mes cours</a>
+      <a class="shortcut" href="https://outlook.office.com/mail/">Boîte mail</a>
     </nav>
 
     <footer class="bottom-bar">
@@ -297,6 +233,7 @@
   <script>
     const URL_EPERSO = "https://eperso.ephec.be/";
     const URL_MOODLE = "https://moodle.ephec.be/my/index.php";
+    const URL_OUTLOOK = "https://outlook.office.com/mail/";
     const PREF_KEY = "ephec_startup_url";
 
     document.getElementById("dateText").textContent = new Date().toLocaleDateString("fr-FR", {
@@ -320,7 +257,11 @@
       clearPref.style.display = "inline";
 
       if (!skipAuto) {
-        const targetName = saved.includes("moodle") ? "Moodle" : "ePerso";
+        const targetName = saved.includes("moodle")
+          ? "Moodle"
+          : saved.includes("outlook")
+          ? "Outlook"
+          : "ePerso";
         let left = 2;
         autoNotice.classList.add("active");
         autoNoticeText.textContent = `Ouverture de ${targetName} dans ${left}s…`;
@@ -354,6 +295,7 @@
 
     document.getElementById("goEperso").addEventListener("click", () => navigateTo(URL_EPERSO));
     document.getElementById("goMoodle").addEventListener("click", () => navigateTo(URL_MOODLE));
+    document.getElementById("goOutlook").addEventListener("click", () => navigateTo(URL_OUTLOOK));
 
     clearPref.addEventListener("click", () => {
       if (timer) clearInterval(timer);
@@ -366,6 +308,7 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "1") navigateTo(URL_EPERSO);
       if (e.key === "2") navigateTo(URL_MOODLE);
+      if (e.key === "3") navigateTo(URL_OUTLOOK);
     });
   </script>
 </body>
