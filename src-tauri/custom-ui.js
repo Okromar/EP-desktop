@@ -26,7 +26,8 @@
         { label: "Résultats", href: "/HeResultat/Resultat", icon: "fa-graduation-cap" },
         { label: "Fiches cours", href: "/HeFicheCours/Index", icon: "fa-book" },
         { label: "Documents", href: "/HeMesDocuments/Index", icon: "fa-folder-open" },
-        { label: "Moodle", href: "https://moodle.ephec.be/my/index.php", icon: "fa-chalkboard-teacher" }
+        { label: "Moodle", href: "https://moodle.ephec.be/my/index.php", icon: "fa-chalkboard-teacher" },
+        { label: "Outlook", href: "https://outlook.office.com/mail/", icon: "fa-envelope" }
       ];
 
       const tabsContainer = document.createElement("div");
