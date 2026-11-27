@@ -1,7 +1,8 @@
 (function () {
   function initSettingsModule() {
     if (!document.body || document.getElementById("ep-settings-modal")) return;
-    if (!window.location.hostname.includes("ephec.be")) return;
+    const host = window.location.hostname;
+    if (!host.includes("ephec.be") && !host.includes("office.com")) return;
 
     const style = document.createElement("style");
     style.textContent = `
@@ -12,7 +13,7 @@
       }
       #ep-settings-backdrop.open { display: flex; }
       #ep-settings-modal {
-        width: 100%; max-width: 480px; background: #0f172a; color: #f8fafc;
+        width: 100%; max-width: 500px; background: #0f172a; color: #f8fafc;
         border: 1px solid rgba(255,255,255,0.14); border-radius: 16px;
         box-shadow: 0 24px 60px rgba(0,0,0,0.5); overflow: hidden;
       }
@@ -33,7 +34,8 @@
       }
       .ep-set-btn {
         background: #2563eb; color: #fff; border: none; border-radius: 8px;
-        padding: 7px 13px; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+        padding: 7px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+        text-decoration: none;
       }
       .ep-set-btn:hover { background: #1d4ed8; }
     `;
@@ -57,6 +59,7 @@
               <option value="">Demander à chaque fois</option>
               <option value="https://eperso.ephec.be/">ePerso</option>
               <option value="https://moodle.ephec.be/my/index.php">Moodle</option>
+              <option value="https://outlook.office.com/mail/">Outlook</option>
             </select>
           </div>
 
@@ -88,8 +91,9 @@
               <span>Basculer d'espace maintenant</span>
             </div>
             <div style="display:flex;gap:6px;">
-              <a href="https://eperso.ephec.be/" class="ep-set-btn" style="text-decoration:none;">ePerso</a>
-              <a href="https://moodle.ephec.be/my/index.php" class="ep-set-btn" style="text-decoration:none;">Moodle</a>
+              <a href="https://eperso.ephec.be/" class="ep-set-btn">ePerso</a>
+              <a href="https://moodle.ephec.be/my/index.php" class="ep-set-btn">Moodle</a>
+              <a href="https://outlook.office.com/mail/" class="ep-set-btn">Outlook</a>
             </div>
           </div>
         </div>
